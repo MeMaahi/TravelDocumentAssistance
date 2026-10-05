@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Travel Text Analysis</h2>
+<p>Paste travel, visa, passport, ticket, or booking-related text below.</p>
+<textarea id="t" rows="12" placeholder="Paste travel-related text here..."></textarea>
+<button onclick="go()">Analyze Text</button>
+<pre id="o"></pre>
+<script>
+async function go(){
+    if(!t.value.trim()){o.textContent="Please enter some text.";return;}
+    o.textContent="Loading...";
+    let r=await fetch('/api/text-analysis',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({text:t.value})
+    });
+    let j=await r.json();
+    o.textContent=j.result||j.error;
+}
+</script>
+{% endblock %}

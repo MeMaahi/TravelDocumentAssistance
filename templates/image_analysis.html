@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Travel Document Image Analysis</h2>
+<p>Upload a clear sample travel document image.</p>
+<input id="i" type="file" accept="image/*">
+<button onclick="go()">Analyze Document</button>
+<pre id="o"></pre>
+<script>
+async function go(){
+    if(!i.files[0]){o.textContent="Please select an image.";return;}
+    let f=new FormData();
+    f.append('image',i.files[0]);
+    o.textContent="Loading...";
+    let r=await fetch('/api/image-analysis',{method:'POST',body:f});
+    let j=await r.json();
+    o.textContent=j.result||j.error;
+}
+</script>
+{% endblock %}
